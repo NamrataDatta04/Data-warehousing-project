@@ -63,7 +63,7 @@ building supplies from 17.7% to 12.8%, about $170k of gross profit since.
 95% of trade customers are still buying each quarter, against 41–47% of retail loyalty members.
 Ninety trade customers buy at more than one store ($1.59M), which no single store's data can show.
 
-All figures come from the tables in [`reports/`](reports), which CI rebuilds and compares on every push.
+All figures come from the tables in [`reports/`](reports). CI regenerates the data, rebuilds the warehouse and reruns every test on each push.
 
 ## How it works
 
@@ -249,8 +249,8 @@ models/marts/core/                dimensions and facts
 models/marts/reporting/           one model per business question
 tests/                            business-rule tests
 seeds/nz_public_holidays.csv      national public holidays, July 2024 to June 2026
-reports/                          report output, checked by CI
-.github/workflows/ci.yml          generates data, builds, tests and compares reports on every push
+reports/                          report output
+.github/workflows/ci.yml          generates data, builds and tests on every push
 ```
 
 ## SQL techniques used

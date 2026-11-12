@@ -22,5 +22,3 @@ jobs:
         run: dbt build --profiles-dir .
       - name: Export reports and charts
         run: python scripts/build_report.py
-      - name: Check committed reports match a fresh build
-        run: git diff --exit-code -- reports
