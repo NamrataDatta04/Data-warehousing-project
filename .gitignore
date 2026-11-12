@@ -1,0 +1,12 @@
+data/raw/
+warehouse/*
+!warehouse/.gitkeep
+exports/
+target/
+logs/
+dbt_packages/
+.user.yml
+__pycache__/
+*.pyc
+.venv/
+.DS_Store

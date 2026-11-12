@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: rpt_store_scorecard
+    description: "Store ranking on as-reported sales, conformed net sales and net profit."
+    columns:
+      - name: store_code
+        data_tests: [unique, not_null]
+  - name: rpt_trade_discount_leakage
+    description: "Trade discount rate per store against the co-op median, with the dollar gap."
+  - name: rpt_sales_rollup
+    description: "Island, region and store subtotals (GROUP BY ROLLUP)."
+  - name: rpt_stockout_impact
+    description: "Stockout days and estimated lost sales by supplier and island."
+  - name: rpt_customer_segments
+    description: "Trade, retail and walk-in share of sales and margin."
+  - name: rpt_cohort_retention
+    description: "Quarterly first-purchase cohorts and the share still buying in later quarters."
+  - name: rpt_margin_by_price_version
+    description: "Gross margin by category before and after each price-list change."
+  - name: rpt_monthly_trend
+    description: "Monthly net sales, three-month moving average and year-on-year growth."
+  - name: rpt_data_quality
+    description: "Rows received, duplicates removed, refunds and overstatement per source system."

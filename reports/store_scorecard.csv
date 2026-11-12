@@ -1,0 +1,13 @@
+store_code,city,region,pos_system,sales_as_reported,net_sales_excl_gst,overstated_pct,rank_as_reported,rank_net_sales,rank_net_profit,gross_margin_pct,rent_pct_of_sales,net_profit,net_margin_pct,net_sales_per_m2_per_year
+AKL03,Auckland,Auckland,pos_a,3577558.0,3414211.0,4.8,1,1,12,29.8,16.4,-158077.0,-4.6,657.0
+AKL01,Auckland,Auckland,pos_a,3251815.0,3117859.0,4.3,2,2,1,29.7,5.5,182845.0,5.9,650.0
+CHC01,Christchurch,Canterbury,pos_a,2740311.0,2618299.0,4.7,5,3,2,29.8,5.0,148277.0,5.7,595.0
+AKL04,Auckland,Auckland,pos_c,2956520.0,2547255.0,16.1,3,4,11,23.8,5.3,-23055.0,-0.9,637.0
+WLG01,Lower Hutt,Wellington,pos_a,2639997.0,2514828.0,5.0,6,5,5,29.9,5.7,121841.0,4.8,662.0
+AKL02,Auckland,Auckland,pos_b,2875998.0,2403811.0,19.6,4,6,3,29.8,4.8,134586.0,5.6,668.0
+HAM01,Hamilton,Waikato,pos_a,2292947.0,2189396.0,4.7,8,7,4,29.8,4.0,128054.0,5.8,644.0
+TGA01,Tauranga,Bay of Plenty,pos_b,2591327.0,2159796.0,20.0,7,8,10,24.6,4.1,10973.0,0.5,675.0
+PMR01,Palmerston North,Manawatū-Whanganui,pos_b,1976373.0,1647924.0,19.9,9,9,6,29.9,3.5,78473.0,4.8,634.0
+DUD01,Dunedin,Otago,pos_b,1855492.0,1543865.0,20.2,10,10,7,29.6,3.6,56615.0,3.7,618.0
+NPE01,Napier,Hawke's Bay,pos_c,1704862.0,1482490.0,15.0,11,11,8,29.8,3.6,54856.0,3.7,618.0
+NSN01,Nelson,Nelson,pos_c,1460338.0,1255596.0,16.3,12,12,9,29.8,3.9,25217.0,2.0,571.0

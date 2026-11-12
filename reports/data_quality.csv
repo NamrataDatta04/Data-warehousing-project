@@ -1,0 +1,4 @@
+source_system,source_format,stores,rows_received,duplicate_rows_removed,rows_loaded,refund_lines,refund_value,amount_as_reported,net_sales_excl_gst,overstated_pct
+pos_a,"ISO dates, GST-exclusive, refund flag",5,152418.0,0.0,152418,3379.0,324017.0,14502627.0,13854593.0,4.7
+pos_b,"dd/mm/yyyy, GST-inclusive, local item codes, refund row type",4,86239.0,0.0,86239,1848.0,165429.0,9299190.0,7755397.0,19.9
+pos_c,"d-Mon-yy, free-text products, GST-inclusive totals, negative refunds",3,60936.0,449.0,60487,1326.0,116062.0,6121720.0,5285341.0,15.8

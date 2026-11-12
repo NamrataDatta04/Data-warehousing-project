@@ -1,0 +1,7 @@
+kereru_dw:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: warehouse/kereru.duckdb
+      threads: 4

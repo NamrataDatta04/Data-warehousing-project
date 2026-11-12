@@ -1,0 +1,4 @@
+customer_type,customers,share_of_net_sales_pct,net_sales_excl_gst,gross_margin_pct,net_sales_per_customer,average_basket,customers_buying_at_several_stores,net_sales_from_multi_store_customers
+TRADE,927,49.4,13286263.0,22.2,14333.0,275.02,90.0,1593109.0
+WALK-IN,,27.7,7451183.0,35.2,,138.11,0.0,0.0
+RETAIL,9111,22.9,6157887.0,35.2,676.0,138.75,0.0,0.0

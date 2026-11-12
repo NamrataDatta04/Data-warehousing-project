@@ -1,0 +1,67 @@
+version: 2
+
+# Every source is a set of CSV extracts read as text. Types are applied in staging,
+# so a bad value fails loudly there instead of being guessed by the reader.
+sources:
+  - name: pos_a
+    description: "Point-of-sale system A (5 stores). ISO timestamps, GST-exclusive prices, refund flag."
+    tables:
+      - name: sales
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/pos_a/*/sales_*.csv', all_varchar = true, filename = true)"
+      - name: customers
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/pos_a/*/customers.csv', all_varchar = true, filename = true)"
+
+  - name: pos_b
+    description: "Point-of-sale system B (4 stores). dd/mm/yyyy dates, GST-inclusive prices, store-local item codes."
+    tables:
+      - name: sales
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/pos_b/*/sales_*.csv', all_varchar = true, filename = true)"
+      - name: customers
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/pos_b/*/customers.csv', all_varchar = true, filename = true)"
+
+  - name: pos_c
+    description: "Spreadsheet exports (3 stores). Free-text product names, GST-inclusive line totals, negative refunds."
+    tables:
+      - name: sales
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/pos_c/*/sales_*.csv', all_varchar = true, filename = true)"
+
+  - name: reference
+    description: "Head-office master data."
+    tables:
+      - name: stores
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/reference/stores.csv', all_varchar = true)"
+      - name: product_catalogue
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/reference/product_catalogue.csv', all_varchar = true)"
+      - name: price_list
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/reference/price_list.csv', all_varchar = true)"
+      - name: suppliers
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/reference/suppliers.csv', all_varchar = true)"
+      - name: pos_b_item_map
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/reference/pos_b_item_map.csv', all_varchar = true)"
+
+  - name: inventory
+    description: "Monthly stock counts, one file per month, all stores."
+    tables:
+      - name: stock
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/inventory/stock_*.csv', all_varchar = true, filename = true)"
+
+  - name: finance
+    description: "Quarterly operating costs and the finance team's sales control totals."
+    tables:
+      - name: opex_quarterly
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/finance/opex_quarterly.csv', all_varchar = true)"
+      - name: control_totals
+        config:
+          external_location: "read_csv('{{ var('raw_path') }}/finance/control_totals.csv', all_varchar = true)"

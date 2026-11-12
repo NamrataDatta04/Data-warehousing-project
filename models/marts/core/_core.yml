@@ -1,0 +1,115 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: "Calendar days, 1 July 2024 to 30 June 2026, with NZ financial year, seasons and public holidays."
+    columns:
+      - name: date_key
+        data_tests: [unique, not_null]
+
+  - name: dim_store
+    description: "The twelve owner-operated stores."
+    columns:
+      - name: store_key
+        data_tests: [unique, not_null]
+      - name: pos_system
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['pos_a', 'pos_b', 'pos_c']
+
+  - name: dim_supplier
+    columns:
+      - name: supplier_key
+        data_tests: [unique, not_null]
+
+  - name: dim_product
+    description: "Type 2 slowly changing dimension: one row per product per price-list version."
+    columns:
+      - name: product_key
+        data_tests: [unique, not_null]
+      - name: supplier_code
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_supplier')
+                field: supplier_code
+
+  - name: dim_customer
+    description: "One row per person across all stores, keyed on a hashed email. No direct identifiers."
+    columns:
+      - name: customer_key
+        data_tests: [unique, not_null]
+      - name: customer_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['TRADE', 'RETAIL', 'WALK-IN']
+
+  - name: fct_sales
+    description: "Sale lines for all stores, GST-exclusive, refunds negative."
+    columns:
+      - name: sales_key
+        data_tests: [unique, not_null]
+      - name: date_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: store_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_store')
+                field: store_key
+      - name: product_key
+        description: "Not null proves every store-local item code and free-text product name was mapped to a head-office SKU."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_key
+      - name: customer_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_key
+      - name: supplier_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_supplier')
+                field: supplier_key
+
+  - name: fct_inventory_monthly
+    description: "Monthly stock snapshot per store and product, with an estimate of sales lost to stockouts."
+    columns:
+      - name: inventory_key
+        data_tests: [unique, not_null]
+      - name: product_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_key
+      - name: store_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_store')
+                field: store_key
+
+  - name: fct_store_pnl_quarterly
+    description: "Quarterly profit and loss per store."
+    columns:
+      - name: store_pnl_key
+        data_tests: [unique, not_null]
+      - name: net_sales_excl_gst
+        data_tests: [not_null]

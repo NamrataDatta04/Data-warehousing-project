@@ -1,0 +1,13 @@
+store_code,city,trade_net_sales,trade_discount_pct,coop_median_discount_pct,trade_gross_margin_pct,discount_above_median,discount_rank
+AKL04,Auckland,1173192.0,24.0,10.0,10.5,214576.0,1
+TGA01,Tauranga,1019592.0,22.0,10.0,12.7,155860.0,2
+AKL02,Auckland,1207026.0,10.1,10.0,24.4,846.0,3
+AKL01,Auckland,1565432.0,10.1,10.0,24.2,296.0,4
+WLG01,Lower Hutt,1228688.0,10.1,10.0,24.4,217.0,5
+PMR01,Palmerston North,819453.0,10.0,10.0,24.5,23.0,6
+CHC01,Christchurch,1292068.0,10.0,10.0,24.2,0.0,7
+HAM01,Hamilton,1094427.0,10.0,10.0,24.4,0.0,8
+NSN01,Nelson,628034.0,10.0,10.0,24.3,0.0,9
+NPE01,Napier,735194.0,10.0,10.0,24.2,0.0,10
+DUD01,Dunedin,794367.0,10.0,10.0,24.2,0.0,11
+AKL03,Auckland,1728789.0,10.0,10.0,24.4,0.0,12

@@ -1,0 +1,19 @@
+supplier_name,country,lead_time_days,island,avg_stockout_days_per_month,product_months_with_stockout_pct,net_sales_excl_gst,estimated_lost_sales,lost_pct_of_potential_sales
+Shenzhen ProTool Co,China,45,North Island,5.3,99.4,5324192.0,1106646.0,17.2
+Shenzhen ProTool Co,China,45,South Island,11.5,100.0,1093498.0,682882.0,38.4
+EuroHand Tools GmbH,Germany,38,North Island,2.4,91.3,1277580.0,110110.0,7.9
+EuroHand Tools GmbH,Germany,38,South Island,4.6,99.0,319465.0,58813.0,15.5
+Aotea Paints,New Zealand,6,North Island,0.3,27.0,3245774.0,34567.0,1.1
+Harbour Plumbing Supplies,New Zealand,8,North Island,0.3,26.5,2668610.0,26209.0,1.0
+Tasman Building Products,New Zealand,7,North Island,0.3,25.3,2479099.0,23317.0,0.9
+Southern Pine Timber,New Zealand,5,North Island,0.3,25.0,1854626.0,18520.0,1.0
+GreenThumb Garden Supplies,New Zealand,6,North Island,0.3,25.2,1496010.0,16273.0,1.1
+Pacific Fasteners,New Zealand,4,North Island,0.3,25.2,1666115.0,15582.0,0.9
+Volt Electrical Wholesale,Australia,14,North Island,0.3,26.9,1465567.0,15113.0,1.0
+Aotea Paints,New Zealand,6,South Island,0.3,28.5,852696.0,8783.0,1.0
+Tasman Building Products,New Zealand,7,South Island,0.3,25.5,682413.0,6773.0,1.0
+Harbour Plumbing Supplies,New Zealand,8,South Island,0.3,24.8,713030.0,6755.0,0.9
+Volt Electrical Wholesale,Australia,14,South Island,0.3,28.5,397915.0,4324.0,1.1
+Pacific Fasteners,New Zealand,4,South Island,0.3,25.4,440652.0,4246.0,1.0
+Southern Pine Timber,New Zealand,5,South Island,0.3,24.1,516316.0,4228.0,0.8
+GreenThumb Garden Supplies,New Zealand,6,South Island,0.3,24.7,401776.0,4025.0,1.0

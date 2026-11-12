@@ -1,0 +1,25 @@
+island,region,store_code,rollup_level,transactions,net_sales_excl_gst,gst_collected,gross_margin_pct,average_basket
+North Island,Auckland,AKL01,0,16591,3117859.0,467684.0,29.7,187.92
+North Island,Auckland,AKL02,0,12805,2403811.0,360578.0,29.8,187.72
+North Island,Auckland,AKL03,0,18035,3414211.0,512136.0,29.8,189.31
+North Island,Auckland,AKL04,0,14556,2547255.0,382092.0,23.8,175.0
+North Island,Auckland,Subtotal,1,61987,11483137.0,1722491.0,28.4,185.25
+North Island,Bay of Plenty,TGA01,0,12276,2159796.0,323976.0,24.6,175.94
+North Island,Bay of Plenty,Subtotal,1,12276,2159796.0,323976.0,24.6,175.94
+North Island,Hawke's Bay,NPE01,0,7946,1482490.0,222376.0,29.8,186.57
+North Island,Hawke's Bay,Subtotal,1,7946,1482490.0,222376.0,29.8,186.57
+North Island,Manawatū-Whanganui,PMR01,0,8559,1647924.0,247192.0,29.9,192.54
+North Island,Manawatū-Whanganui,Subtotal,1,8559,1647924.0,247192.0,29.9,192.54
+North Island,Waikato,HAM01,0,11682,2189396.0,328412.0,29.8,187.42
+North Island,Waikato,Subtotal,1,11682,2189396.0,328412.0,29.8,187.42
+North Island,Wellington,WLG01,0,13541,2514828.0,377228.0,29.9,185.72
+North Island,Wellington,Subtotal,1,13541,2514828.0,377228.0,29.9,185.72
+North Island,Subtotal,Subtotal,2,115991,21477572.0,3221675.0,28.6,185.17
+South Island,Canterbury,CHC01,0,15034,2618299.0,392749.0,29.8,174.16
+South Island,Canterbury,Subtotal,1,15034,2618299.0,392749.0,29.8,174.16
+South Island,Nelson,NSN01,0,7077,1255596.0,188341.0,29.8,177.42
+South Island,Nelson,Subtotal,1,7077,1255596.0,188341.0,29.8,177.42
+South Island,Otago,DUD01,0,8539,1543865.0,231584.0,29.6,180.8
+South Island,Otago,Subtotal,1,8539,1543865.0,231584.0,29.6,180.8
+South Island,Subtotal,Subtotal,2,30650,5417760.0,812674.0,29.7,176.76
+All stores,Subtotal,Subtotal,3,146641,26895332.0,4034349.0,28.8,183.41
