@@ -1,0 +1,2 @@
+# Only needed for scripts/upload_to_azure.py
+azure-storage-blob>=12.19
