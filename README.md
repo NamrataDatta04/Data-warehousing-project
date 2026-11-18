@@ -4,7 +4,8 @@
 
 A data warehouse, built with **dbt, SQL and Python**, that turns the mismatched sales files of twelve
 owner-operated New Zealand hardware stores into one tested star schema, and uses it to answer the
-questions head office could not answer before.
+questions head office could not answer before. It runs locally on DuckDB and in the cloud on
+**Snowflake**, loading from **Azure Blob Storage**.
 
 > **About the data.** Kererū Hardware Co-operative is fictional. Every store, supplier, customer,
 > price and transaction is synthetic and is created by a seeded script in this repository. No real
@@ -214,6 +215,25 @@ accepted values, and five business rules in [`tests/`](tests):
 | `assert_discounts_are_plausible` | GST conversion and price-list joins produced sensible discounts |
 
 Switching off the de-duplication makes the first two fail, which is how I checked they do their job.
+
+## In the cloud: Azure Blob Storage and Snowflake
+
+The same dbt project builds in Snowflake (hosted on Azure, Australia East). The stores' files are
+uploaded to an Azure Blob Storage container, loaded into a `RAW` schema with `COPY INTO`, and
+transformed by dbt running as a key-pair service user with a least-privilege role. Setup, load and
+teardown scripts are in [`snowflake/`](snowflake).
+
+All 13 source tables loaded with the expected row counts:
+
+![Snowflake load check](docs/img/snowflake/raw_load_check.png)
+
+All 33 models, the seed and the 39 tests pass in Snowflake, including the reconciliation to finance control totals:
+
+![dbt build on Snowflake](docs/img/snowflake/dbt_build_snowflake.png)
+
+And Snowflake gives the same store results as the local DuckDB build, to the dollar:
+
+![Store scorecard in Snowflake](docs/img/snowflake/store_scorecard_snowflake.png)
 
 ## Run it yourself
 

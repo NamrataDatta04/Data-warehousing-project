@@ -10,4 +10,6 @@ drop database if exists kereru_dw;
 drop warehouse if exists transforming_wh;
 drop resource monitor if exists kereru_monitor;
 drop user if exists dbt_svc;
+drop user if exists powerbi_svc;
 drop role if exists transformer;
+drop role if exists reporter;

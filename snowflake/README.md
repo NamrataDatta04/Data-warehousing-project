@@ -16,6 +16,12 @@ generate_source_data.py ─► Azure Blob Storage ─► Snowflake RAW ─► db
                            container "raw"        COPY INTO          role TRANSFORMER, user DBT_SVC
 ```
 
+## Tested
+
+Run on a Snowflake trial account hosted on Azure (Australia East), with the files in an Azure
+storage account in the same region: all 13 raw tables loaded with the expected row counts, `dbt build`
+passed 73 of 73, and the store scorecard matched the DuckDB build exactly.
+
 ## Steps
 
 1. Generate the source files and upload them to a container called `raw`:
@@ -28,13 +34,17 @@ generate_source_data.py ─► Azure Blob Storage ─► Snowflake RAW ─► db
    name and a read-and-list SAS token for the container pasted in. The last query should say OK for every table.
 6. Set `SNOWFLAKE_ACCOUNT` (your account identifier, `ORGNAME-ACCOUNTNAME`) and
    `SNOWFLAKE_PRIVATE_KEY_PATH`, then run `dbt build --profiles-dir . --target snowflake`.
-7. When finished, run [`99_teardown.sql`](99_teardown.sql) so nothing keeps using credits.
+7. For Power BI, create a read-only login: run `python scripts/make_snowflake_key.py --user powerbi_svc --encrypt`,
+   then run [`03_powerbi_access.sql`](03_powerbi_access.sql) with that public key pasted in.
+8. When finished, run [`99_teardown.sql`](99_teardown.sql) so nothing keeps using credits.
 
 ## Security choices
 
 - dbt connects as `DBT_SVC`, a Snowflake service user that can only sign in with a key pair.
   The private key stays in your home folder and is ignored by Git.
 - `TRANSFORMER` can read `RAW` and create its own schemas, nothing else.
+- Power BI connects as `POWERBI_SVC` with the `REPORTER` role, which can only read the `CORE` and
+  `REPORTING` schemas. It never sees `RAW`, where customer names and emails are.
 - Objects are created by `SYSADMIN` and roles and users by `SECURITYADMIN`, as Snowflake recommends;
   `ACCOUNTADMIN` is used only for the credit limit.
 - A resource monitor suspends the warehouse at 10 credits a month; the warehouse suspends after 60 seconds idle.
