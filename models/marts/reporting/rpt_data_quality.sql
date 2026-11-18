@@ -1,5 +1,11 @@
 -- What the pipeline had to fix on the way in, per source system.
-with received as (
+with stores_per_system as (
+    select pos_system as source_system, count(*) as stores
+    from {{ ref('dim_store') }}
+    group by pos_system
+),
+
+received as (
     select source_system, sum(rows_received) as rows_received, sum(amount_as_reported) as amount_as_reported
     from {{ ref('int_sales_as_reported') }}
     group by source_system
@@ -23,7 +29,7 @@ select
         when 'pos_b' then 'dd/mm/yyyy, GST-inclusive, local item codes, refund row type'
         else 'd-Mon-yy, free-text products, GST-inclusive totals, negative refunds'
     end                                                        as source_format,
-    (select count(*) from {{ ref('dim_store') }} as s where s.pos_system = r.source_system) as stores,
+    sps.stores,
     r.rows_received,
     r.rows_received - l.rows_loaded                            as duplicate_rows_removed,
     l.rows_loaded,
@@ -34,4 +40,5 @@ select
     round(100.0 * (r.amount_as_reported / l.net_sales_excl_gst - 1), 1) as overstated_pct
 from received as r
 join loaded   as l on r.source_system = l.source_system
+join stores_per_system as sps on r.source_system = sps.source_system
 order by r.source_system

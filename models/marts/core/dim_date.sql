@@ -1,21 +1,27 @@
 -- One row per calendar day, with the attributes New Zealand reporting needs:
 -- 1 April - 31 March financial year, southern-hemisphere seasons, national public holidays.
 with days as (
-    select cast(unnest(generate_series(date '2024-07-01', date '2026-06-30', interval 1 day)) as date) as calendar_date
+    {{ date_spine('2024-07-01', '2026-06-30') }}
 )
 
 select
-    cast(strftime(d.calendar_date, '%Y%m%d') as integer)          as date_key,
+    {{ date_key('d.calendar_date') }}                              as date_key,
     d.calendar_date,
-    dayname(d.calendar_date)                                      as day_name,
-    isodow(d.calendar_date)                                       as day_of_week,
-    isodow(d.calendar_date) >= 6                                  as is_weekend,
+    case {{ iso_day_of_week('d.calendar_date') }}
+        when 1 then 'Monday' when 2 then 'Tuesday' when 3 then 'Wednesday' when 4 then 'Thursday'
+        when 5 then 'Friday' when 6 then 'Saturday' else 'Sunday' end as day_name,
+    {{ iso_day_of_week('d.calendar_date') }}                      as day_of_week,
+    {{ iso_day_of_week('d.calendar_date') }} >= 6                 as is_weekend,
     month(d.calendar_date)                                        as month_number,
-    monthname(d.calendar_date)                                    as month_name,
-    date_trunc('month', d.calendar_date)::date                    as month_start,
+    case month(d.calendar_date)
+        when 1 then 'January' when 2 then 'February' when 3 then 'March' when 4 then 'April'
+        when 5 then 'May' when 6 then 'June' when 7 then 'July' when 8 then 'August'
+        when 9 then 'September' when 10 then 'October' when 11 then 'November' else 'December' end
+                                                                  as month_name,
+    cast(date_trunc('month', d.calendar_date) as date)            as month_start,
     quarter(d.calendar_date)                                      as quarter_number,
     year(d.calendar_date) || 'Q' || quarter(d.calendar_date)      as quarter_label,
-    date_trunc('quarter', d.calendar_date)::date                  as quarter_start,
+    cast(date_trunc('quarter', d.calendar_date) as date)          as quarter_start,
     year(d.calendar_date)                                         as calendar_year,
     'FY' || (year(d.calendar_date) + case when month(d.calendar_date) >= 4 then 1 else 0 end)
                                                                   as nz_financial_year,

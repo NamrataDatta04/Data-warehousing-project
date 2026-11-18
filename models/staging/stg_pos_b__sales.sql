@@ -7,7 +7,7 @@ typed as (
     select
         {{ store_from_filename() }}                               as store_code,
         "Receipt No"                                              as local_transaction_id,
-        strptime("Date", '%d/%m/%Y')::date                        as sale_date,
+        {{ parse_date('"Date"', 'DD/MM/YYYY') }}                        as sale_date,
         "Item Code"                                               as item_code,
         nullif("Cust Ref", '')                                    as local_customer_ref,
         "Type" = 'REFUND'                                         as is_return,

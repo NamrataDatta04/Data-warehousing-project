@@ -6,7 +6,7 @@ with sales as (
 
 select
     {{ surrogate_key(['s.transaction_id', 's.line_number']) }}          as sales_key,
-    cast(strftime(s.sale_date, '%Y%m%d') as integer)                    as date_key,
+    {{ date_key('s.sale_date') }}                                      as date_key,
     {{ surrogate_key(['s.store_code']) }}                               as store_key,
     p.product_key,
     {{ surrogate_key(["coalesce(s.customer_id, 'UNKNOWN')"]) }}         as customer_key,

@@ -22,7 +22,7 @@ by_store as (
 select
     p.customer_id,
     -- a customer with a trade account anywhere is a trade customer everywhere
-    case when bool_or(p.reported_customer_type = 'TRADE') then 'TRADE' else 'RETAIL' end as customer_type,
+    case when {{ bool_or("p.reported_customer_type = 'TRADE'") }} then 'TRADE' else 'RETAIL' end as customer_type,
     min(p.sale_date)                                   as first_purchase_date,
     max(p.sale_date)                                   as last_purchase_date,
     count(distinct p.store_code)                       as stores_shopped,

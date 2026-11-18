@@ -16,7 +16,7 @@ with trading as (
 
 select
     {{ surrogate_key(['o.store_code', 'o.quarter_label']) }}       as store_pnl_key,
-    cast(strftime(o.quarter_start, '%Y%m%d') as integer)           as date_key,
+    {{ date_key('o.quarter_start') }}                             as date_key,
     s.store_key,
     o.quarter_label,
     t.transaction_count,

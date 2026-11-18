@@ -22,7 +22,7 @@ select
     v.list_price_excl_gst,
     v.standard_cost,
     v.valid_from,
-    coalesce(v.next_effective_from - 1, date '9999-12-31')         as valid_to,
+    coalesce(cast({{ dbt.dateadd('day', -1, 'v.next_effective_from') }} as date), date '9999-12-31')         as valid_to,
     v.next_effective_from is null                                  as is_current
 from versions as v
 join {{ ref('stg_reference__products') }} as p

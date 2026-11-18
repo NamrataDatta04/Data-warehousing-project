@@ -2,66 +2,90 @@ version: 2
 
 # Every source is a set of CSV extracts read as text. Types are applied in staging,
 # so a bad value fails loudly there instead of being guessed by the reader.
+#
+# Two targets read the same sources:
+#   * DuckDB (default): external_location reads the CSV files in data/raw directly.
+#   * Snowflake: external_location is ignored, and dbt reads the tables in the RAW
+#     schema that snowflake/02_load_raw.sql loads from Azure Blob Storage.
 sources:
   - name: pos_a
+    schema: raw
     description: "Point-of-sale system A (5 stores). ISO timestamps, GST-exclusive prices, refund flag."
     tables:
       - name: sales
+        identifier: pos_a_sales
         config:
           external_location: "read_csv('{{ var('raw_path') }}/pos_a/*/sales_*.csv', all_varchar = true, filename = true)"
       - name: customers
+        identifier: pos_a_customers
         config:
           external_location: "read_csv('{{ var('raw_path') }}/pos_a/*/customers.csv', all_varchar = true, filename = true)"
 
   - name: pos_b
+    schema: raw
     description: "Point-of-sale system B (4 stores). dd/mm/yyyy dates, GST-inclusive prices, store-local item codes."
     tables:
       - name: sales
+        identifier: pos_b_sales
         config:
           external_location: "read_csv('{{ var('raw_path') }}/pos_b/*/sales_*.csv', all_varchar = true, filename = true)"
       - name: customers
+        identifier: pos_b_customers
         config:
           external_location: "read_csv('{{ var('raw_path') }}/pos_b/*/customers.csv', all_varchar = true, filename = true)"
 
   - name: pos_c
+    schema: raw
     description: "Spreadsheet exports (3 stores). Free-text product names, GST-inclusive line totals, negative refunds."
     tables:
       - name: sales
+        identifier: pos_c_sales
         config:
           external_location: "read_csv('{{ var('raw_path') }}/pos_c/*/sales_*.csv', all_varchar = true, filename = true)"
 
   - name: reference
+    schema: raw
     description: "Head-office master data."
     tables:
       - name: stores
+        identifier: stores
         config:
           external_location: "read_csv('{{ var('raw_path') }}/reference/stores.csv', all_varchar = true)"
       - name: product_catalogue
+        identifier: product_catalogue
         config:
           external_location: "read_csv('{{ var('raw_path') }}/reference/product_catalogue.csv', all_varchar = true)"
       - name: price_list
+        identifier: price_list
         config:
           external_location: "read_csv('{{ var('raw_path') }}/reference/price_list.csv', all_varchar = true)"
       - name: suppliers
+        identifier: suppliers
         config:
           external_location: "read_csv('{{ var('raw_path') }}/reference/suppliers.csv', all_varchar = true)"
       - name: pos_b_item_map
+        identifier: pos_b_item_map
         config:
           external_location: "read_csv('{{ var('raw_path') }}/reference/pos_b_item_map.csv', all_varchar = true)"
 
   - name: inventory
+    schema: raw
     description: "Monthly stock counts, one file per month, all stores."
     tables:
       - name: stock
+        identifier: inventory_stock
         config:
           external_location: "read_csv('{{ var('raw_path') }}/inventory/stock_*.csv', all_varchar = true, filename = true)"
 
   - name: finance
+    schema: raw
     description: "Quarterly operating costs and the finance team's sales control totals."
     tables:
       - name: opex_quarterly
+        identifier: opex_quarterly
         config:
           external_location: "read_csv('{{ var('raw_path') }}/finance/opex_quarterly.csv', all_varchar = true)"
       - name: control_totals
+        identifier: control_totals
         config:
           external_location: "read_csv('{{ var('raw_path') }}/finance/control_totals.csv', all_varchar = true)"

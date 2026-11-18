@@ -27,15 +27,14 @@ select
     s.price_list_from,
     round(s.net_sales)                                                  as net_sales_excl_gst,
     round(100.0 * s.gross_profit / s.net_sales, 1)                      as gross_margin_pct,
-    round(100.0 * (l.total_standard_cost / lag(l.total_standard_cost) over w - 1), 1) as cost_change_pct,
-    round(100.0 * (l.total_list_price / lag(l.total_list_price) over w - 1), 1)       as list_price_change_pct,
+    round(100.0 * (l.total_standard_cost / lag(l.total_standard_cost) over (partition by s.category order by s.price_list_from) - 1), 1) as cost_change_pct,
+    round(100.0 * (l.total_list_price / lag(l.total_list_price) over (partition by s.category order by s.price_list_from) - 1), 1)       as list_price_change_pct,
     round(100.0 * s.gross_profit / s.net_sales
-          - lag(100.0 * s.gross_profit / s.net_sales) over w, 1)        as margin_change_points,
+          - lag(100.0 * s.gross_profit / s.net_sales) over (partition by s.category order by s.price_list_from), 1)        as margin_change_points,
     -- gross profit the later period would have earned at the earlier margin
-    round((lag(s.gross_profit / s.net_sales) over w - s.gross_profit / s.net_sales) * s.net_sales)
+    round((lag(s.gross_profit / s.net_sales) over (partition by s.category order by s.price_list_from) - s.gross_profit / s.net_sales) * s.net_sales)
                                                                         as gross_profit_lost_to_squeeze
 from sales_by_version as s
 join price_list_by_version as l
     on s.category = l.category and s.price_list_from = l.price_list_from
-window w as (partition by s.category order by s.price_list_from)
 order by s.category, s.price_list_from

@@ -1,7 +1,22 @@
 kereru_dw:
   target: dev
   outputs:
+    # Default: a local DuckDB file. No account needed; used by CI.
     dev:
       type: duckdb
       path: warehouse/kereru.duckdb
+      threads: 4
+
+    # Snowflake on Azure. Run with:  dbt build --profiles-dir . --target snowflake
+    # Connects as a service user with key-pair authentication, so no password is stored.
+    # Set SNOWFLAKE_ACCOUNT and SNOWFLAKE_PRIVATE_KEY_PATH first (see snowflake/README.md).
+    snowflake:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT', 'not-set') }}"
+      user: dbt_svc
+      role: transformer
+      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH', 'not-set') }}"
+      warehouse: transforming_wh
+      database: kereru_dw
+      schema: dbt
       threads: 4

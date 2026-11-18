@@ -10,3 +10,7 @@ __pycache__/
 *.pyc
 .venv/
 .DS_Store
+# keys and secrets
+*.p8
+*.pem
+.env

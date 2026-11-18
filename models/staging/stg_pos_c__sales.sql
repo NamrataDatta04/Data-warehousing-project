@@ -8,8 +8,9 @@ typed as (
     select
         {{ store_from_filename() }}                               as store_code,
         invoice_ref                                               as local_transaction_id,
-        strptime(sale_date, '%d-%b-%y')::date                     as sale_date,
-        lower(trim(regexp_replace(product, '\s+', ' ', 'g')))     as product_name_clean,
+        -- days come as 1-Jan-25 or 15-Jan-25; pad to two digits before parsing
+        {{ parse_date("lpad(sale_date, 9, '0')", 'DD-MON-YY') }} as sale_date,
+        lower(trim({{ collapse_spaces('product') }}))     as product_name_clean,
         cast(quantity as integer)                                 as quantity_signed,
         cast(line_total_incl_gst as decimal(12, 2))               as line_total_incl_gst,
         {{ customer_id('customer_email') }}                       as customer_id,

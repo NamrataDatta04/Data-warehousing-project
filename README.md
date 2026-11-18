@@ -235,6 +235,8 @@ To explore the result:
 python -c "import duckdb; print(duckdb.connect('warehouse/kereru.duckdb').sql('select * from reporting.rpt_store_scorecard'))"
 ```
 
+The same project also builds in **Snowflake**, loading the source files from **Azure Blob Storage**; see [`snowflake/README.md`](snowflake/README.md).
+
 For Power BI or Tableau, `python scripts/build_report.py --export-star` writes the eight star-schema
 tables to `exports/` as Parquet files; relate them on the `_key` columns.
 
@@ -243,6 +245,10 @@ tables to `exports/` as Parquet files; relate them on the `_key` columns.
 ```
 scripts/generate_source_data.py   seeded generator for the twelve stores' source files
 scripts/build_report.py           exports reports, charts and Parquet files
+scripts/upload_to_azure.py        uploads the source files to Azure Blob Storage
+scripts/make_snowflake_key.py     creates the key pair dbt uses to sign in to Snowflake
+snowflake/                        Snowflake setup, load and teardown scripts
+macros/cross_database.sql         the SQL that differs between DuckDB and Snowflake
 models/staging/                   one model per source file: typing, cleaning, GST, de-duplication
 models/intermediate/              conformed sales and customers; the "as reported" baseline
 models/marts/core/                dimensions and facts
@@ -264,8 +270,6 @@ cohort analysis, surrogate keys, regular expressions for cleaning, and Jinja mac
 - The data is synthetic, so the findings show what the model can surface, not facts about any real business.
 - Lost sales are an estimate: the sales rate on in-stock days applied to out-of-stock days.
 - Regional anniversary days are not in the holiday calendar; only national public holidays are.
-- The SQL is written for DuckDB. Moving to Snowflake or Databricks would mean replacing the CSV
-  readers in `models/staging/_sources.yml` with loaded tables and adjusting a few functions; I have not run it there.
 - Natural next steps: incremental loads for `fct_sales`, a Power BI report on the exported tables, and scheduled runs.
 
 ## Licence

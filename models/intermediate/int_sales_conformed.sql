@@ -50,6 +50,8 @@ select
     reported_customer_type,
     is_return,
     case when is_return then -1 else 1 end * quantity_abs               as quantity,
-    case when is_return then -1 else 1 end * gross_amount_excl_gst_abs  as reported_gross_amount_excl_gst,
-    case when is_return then -1 else 1 end * net_amount_excl_gst_abs    as net_amount_excl_gst
+    cast(case when is_return then -1 else 1 end * gross_amount_excl_gst_abs as decimal(14, 2))
+                                                                         as reported_gross_amount_excl_gst,
+    cast(case when is_return then -1 else 1 end * net_amount_excl_gst_abs as decimal(14, 2))
+                                                                         as net_amount_excl_gst
 from unioned

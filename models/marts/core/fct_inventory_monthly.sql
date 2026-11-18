@@ -25,7 +25,7 @@ sold as (
 
 select
     {{ surrogate_key(['stock.store_code', 'stock.sku', 'stock.month_start']) }} as inventory_key,
-    cast(strftime(stock.month_end, '%Y%m%d') as integer)           as date_key,
+    {{ date_key('stock.month_end') }}                             as date_key,
     {{ surrogate_key(['stock.store_code']) }}                      as store_key,
     p.product_key,
     {{ surrogate_key(['p.supplier_code']) }}                       as supplier_key,
