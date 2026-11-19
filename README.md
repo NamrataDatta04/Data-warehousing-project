@@ -5,7 +5,7 @@
 A data warehouse, built with **dbt, SQL and Python**, that turns the mismatched sales files of twelve
 owner-operated New Zealand hardware stores into one tested star schema, and uses it to answer the
 questions head office could not answer before. It runs locally on DuckDB and in the cloud on
-**Snowflake**, loading from **Azure Blob Storage**.
+**Snowflake**, loading from **Azure Blob Storage**, with a **Power BI** report on top.
 
 > **About the data.** Kererū Hardware Co-operative is fictional. Every store, supplier, customer,
 > price and transaction is synthetic and is created by a seeded script in this repository. No real
@@ -235,6 +235,30 @@ And Snowflake gives the same store results as the local DuckDB build, to the dol
 
 ![Store scorecard in Snowflake](docs/img/snowflake/store_scorecard_snowflake.png)
 
+## Power BI report
+
+Power BI Desktop connects to Snowflake as a read-only service user (key-pair sign-in; the `REPORTER`
+role can read only the `CORE` and `REPORTING` schemas, never the raw files with customer details).
+It imports the eight star-schema tables with the same relationships as the warehouse, marks
+`DIM_DATE` as the date table, and adds 18 DAX measures, listed in [`powerbi/measures.dax`](powerbi/measures.dax).
+The measures reproduce the warehouse figures: net sales $26,895,332, gross margin 28.8%, and $371,818
+of trade discount above the co-op median.
+
+The report file is [`powerbi/kereru_hardware.pbix`](powerbi/kereru_hardware.pbix). It opens with the
+imported data; refreshing it needs your own Snowflake account set up as in [`snowflake/`](snowflake).
+
+**Store scorecard:** the highest-selling store is the only large one losing money.
+
+![Power BI store scorecard](docs/img/powerbi/store_scorecard.png)
+
+**Trade discounts:** two stores give trade customers more than double the co-op's usual discount.
+
+![Power BI trade discounts](docs/img/powerbi/trade_discounts.png)
+
+**Stockouts:** the overseas power-tool supplier causes most lost sales, worst in the South Island.
+
+![Power BI stockouts](docs/img/powerbi/stockouts.png)
+
 ## Run it yourself
 
 Requires Python 3.10 or later. Nothing else to install or sign up for; the warehouse is a local DuckDB file.
@@ -268,6 +292,7 @@ scripts/build_report.py           exports reports, charts and Parquet files
 scripts/upload_to_azure.py        uploads the source files to Azure Blob Storage
 scripts/make_snowflake_key.py     creates the key pair dbt uses to sign in to Snowflake
 snowflake/                        Snowflake setup, load and teardown scripts
+powerbi/                          Power BI report and its DAX measures
 macros/cross_database.sql         the SQL that differs between DuckDB and Snowflake
 models/staging/                   one model per source file: typing, cleaning, GST, de-duplication
 models/intermediate/              conformed sales and customers; the "as reported" baseline
@@ -290,7 +315,7 @@ cohort analysis, surrogate keys, regular expressions for cleaning, and Jinja mac
 - The data is synthetic, so the findings show what the model can surface, not facts about any real business.
 - Lost sales are an estimate: the sales rate on in-stock days applied to out-of-stock days.
 - Regional anniversary days are not in the holiday calendar; only national public holidays are.
-- Natural next steps: incremental loads for `fct_sales`, a Power BI report on the exported tables, and scheduled runs.
+- Natural next steps: incremental loads for `fct_sales`, scheduled runs, and publishing the Power BI report to the Power BI service.
 
 ## Licence
 

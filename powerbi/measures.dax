@@ -1,0 +1,34 @@
+// DAX measures in powerbi/kereru_hardware.pbix (table: _Measure)
+// Kept here as text so they can be read without opening Power BI.
+
+// Sales and profit
+Net Sales = SUM(FCT_SALES[NET_AMOUNT_EXCL_GST])
+Gross Sales = SUM(FCT_SALES[GROSS_AMOUNT_EXCL_GST])
+Gross Profit = SUM(FCT_SALES[GROSS_PROFIT_AMOUNT])
+Gross Margin % = DIVIDE([Gross Profit], [Net Sales])
+Transactions = DISTINCTCOUNT(FCT_SALES[TRANSACTION_ID])
+Average Basket = DIVIDE([Net Sales], [Transactions])
+Net Profit = SUM(FCT_STORE_PNL_QUARTERLY[NET_PROFIT])
+Net Margin % = DIVIDE([Net Profit], SUM(FCT_STORE_PNL_QUARTERLY[NET_SALES_EXCL_GST]))
+Rent % of Sales = DIVIDE(SUM(FCT_STORE_PNL_QUARTERLY[RENT_EXPENSE]), SUM(FCT_STORE_PNL_QUARTERLY[NET_SALES_EXCL_GST]))
+
+// Trade discounts: each store's trade discount against the co-op median,
+// and the dollars given away above that median
+Discount Given = SUM(FCT_SALES[DISCOUNT_AMOUNT_EXCL_GST])
+Trade Discount Rate = CALCULATE(DIVIDE([Discount Given], [Gross Sales]), DIM_CUSTOMER[CUSTOMER_TYPE] = "TRADE")
+Co-op Median Trade Discount = MEDIANX(ALL(DIM_STORE), [Trade Discount Rate])
+Discount Above Median =
+    SUMX(
+        VALUES(DIM_STORE[STORE_CODE]),
+        MAX([Trade Discount Rate] - [Co-op Median Trade Discount], 0)
+            * CALCULATE([Gross Sales], DIM_CUSTOMER[CUSTOMER_TYPE] = "TRADE")
+    )
+
+// Stockouts
+Lost Sales (est.) = SUM(FCT_INVENTORY_MONTHLY[ESTIMATED_LOST_SALES])
+Lost % of Potential Sales = DIVIDE([Lost Sales (est.)], [Lost Sales (est.)] + SUM(FCT_INVENTORY_MONTHLY[NET_SALES_EXCL_GST]))
+Avg Stockout Days per Month = AVERAGE(FCT_INVENTORY_MONTHLY[STOCKOUT_DAYS])
+
+// Growth (DIM_DATE is marked as the date table)
+Net Sales Last Year = CALCULATE([Net Sales], SAMEPERIODLASTYEAR(DIM_DATE[CALENDAR_DATE]))
+Sales Growth % = DIVIDE([Net Sales] - [Net Sales Last Year], [Net Sales Last Year])
